@@ -1,12 +1,21 @@
 package ru.prokhorov.server;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class AbstractMessageHandler  extends SimpleChannelInboundHandler<AbstractMessage>{
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
+import ru.prokhorov.model.AbstractMessage;
+import ru.prokhorov.model.FileMessage;
+import ru.prokhorov.model.FileRequest;
+import ru.prokhorov.model.FilesList;
+
+@Slf4j
+public class AbstractMessageHandler extends SimpleChannelInboundHandler<AbstractMessage> {
+
     private Path currentPath;
 
     public AbstractMessageHandler() {
@@ -21,7 +30,8 @@ public class AbstractMessageHandler  extends SimpleChannelInboundHandler<Abstrac
     @Override
     protected void channelRead0(ChannelHandlerContext ctx,
                                 AbstractMessage message) throws Exception {
-        log.debug("received: {}", message);
+        //log.debug("received: {}", message);
+
         switch (message.getMessageType()) {
             case FILE_REQUEST:
                 FileRequest req = (FileRequest) message;

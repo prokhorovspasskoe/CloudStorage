@@ -1,5 +1,9 @@
 package ru.prokhorov.server;
 
+import io.netty.channel.ChannelHandlerContext;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class ContextStoreService {
     private final ConcurrentLinkedQueue<ChannelHandlerContext> queue;
 

@@ -1,6 +1,11 @@
 package ru.prokhorov.server;
 
-public class StringMessageHandler {
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class StringMessageHandler extends SimpleChannelInboundHandler<String> {
     private final UserNameService nameService;
     private final ContextStoreService contextStoreService;
     private String name;

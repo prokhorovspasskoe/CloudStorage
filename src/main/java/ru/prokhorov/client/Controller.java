@@ -18,10 +18,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import ru.prokhorov.model.AbstractMessage;
-import ru.prokhorov.model.FileMessage;
-import ru.prokhorov.model.FileRequest;
-import ru.prokhorov.model.FilesList;
+import ru.prokhorov.model.*;
 
 public class Controller implements Initializable {
 
@@ -87,7 +84,6 @@ public class Controller implements Initializable {
         try {
             baseDir = Paths.get(System.getProperty("user.home"));
             clientFiles.getItems().addAll(getFileNames());
-
             clientFiles.setOnMouseClicked(e -> {
                 if (e.getClickCount() == 2) {
                     String file = clientFiles.getSelectionModel().getSelectedItem();
@@ -118,5 +114,10 @@ public class Controller implements Initializable {
     public void downLoad(ActionEvent actionEvent) throws IOException {
         String file = serverFiles.getSelectionModel().getSelectedItem();
         os.writeObject(new FileRequest(file));
+    }
+
+    public void delete(ActionEvent actionEvent) throws IOException {
+        Path path = Paths.get(serverFiles.getSelectionModel().getSelectedItem());
+        os.writeObject(new FileDelete(path));
     }
 }

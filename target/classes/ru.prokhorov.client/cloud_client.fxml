@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" fx:controller="ru.prokhorov.client.Controller" xmlns:fx="http://javafx.com/fxml/1">
-    <ListView fx:id="clientFiles" layoutY="55.0" prefHeight="171.0" prefWidth="600.0"/>
-    <ListView fx:id="serverFiles" layoutY="226.0" prefHeight="171.0" prefWidth="600.0"/>
-    <Button onAction="#upload" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="263.0" text="upload"/>
-    <Button onAction="#downLoad" layoutX="323.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="263.0" text="download"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="ru.prokhorov.client.Controller">
+    <ListView fx:id="clientFiles" layoutY="55.0" prefHeight="171.0" prefWidth="600.0" />
+    <ListView fx:id="serverFiles" layoutY="226.0" prefHeight="171.0" prefWidth="600.0" />
+    <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#upload" prefHeight="27.0" prefWidth="111.0" text="Upload" />
+    <Button layoutX="475.0" layoutY="14.0" mnemonicParsing="false" onAction="#downLoad" prefHeight="27.0" prefWidth="111.0" text="Download" />
+   <Button layoutX="135.0" layoutY="15.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="111.0" text="Delete" />
 </AnchorPane>

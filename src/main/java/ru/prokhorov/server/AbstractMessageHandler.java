@@ -30,7 +30,7 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
     @Override
     protected void channelRead0(ChannelHandlerContext ctx,
                                 AbstractMessage message) throws Exception {
-        //log.debug("received: {}", message);
+        log.debug("received: {}", message);
 
         switch (message.getMessageType()) {
             case FILE_REQUEST:

@@ -1,17 +1,23 @@
 package ru.prokhorov.model;
 
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileDelete implements  AbstractMessage{
+@Data
+@Slf4j
+public class FileDelete implements  AbstractMessage {
 
-    private Path deletePach;
+    private String deletePach;
 
-    public FileDelete(Path path) throws IOException {
-        deletePach = Paths.get("serverFiles");
-        String deleteP = deletePach.toString() + "/" + path.toString();
+    public FileDelete(String fileName) throws IOException {
+        deletePach = "serverFiles";
+        String deleteP = deletePach + "/" + fileName;
         Files.delete(Paths.get(deleteP));
     }
 

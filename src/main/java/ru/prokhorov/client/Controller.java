@@ -117,7 +117,7 @@ public class Controller implements Initializable {
     }
 
     public void delete(ActionEvent actionEvent) throws IOException {
-        Path path = Paths.get(serverFiles.getSelectionModel().getSelectedItem());
-        os.writeObject(new FileDelete(path));
+        String file = serverFiles.getSelectionModel().getSelectedItem();
+        os.writeObject(new FileDelete(file));
     }
 }

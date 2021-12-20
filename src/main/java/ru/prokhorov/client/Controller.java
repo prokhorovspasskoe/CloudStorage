@@ -63,12 +63,6 @@ public class Controller implements Initializable {
         clientFiles.getItems().addAll(list);
     }
 
-    private List<FileInfo> getClientFiles() throws IOException {
-        return Files.list(baseDir)
-                .map(FileInfo::new)
-                .collect(Collectors.toList());
-    }
-
     private List<String> getFileNames() {
         try {
             return Files.list(baseDir)

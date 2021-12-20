@@ -43,8 +43,9 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                         new FileMessage(currentPath.resolve(req.getFileName()))
                 );
                 break;
+            case COPY_DIR:
             case DELETE:
-                File getFilesDir = new File("serverFiles");
+                File getFilesDir = new File(String.valueOf(currentPath));
                 List<String> updateDir = Arrays.asList(Objects.requireNonNull(getFilesDir.list()));
                 ctx.writeAndFlush(new FilesList(updateDir));
                 break;

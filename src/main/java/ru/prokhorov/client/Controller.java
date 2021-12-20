@@ -108,7 +108,13 @@ public class Controller implements Initializable {
     public void upload(ActionEvent actionEvent) throws IOException {
         String file = clientFiles.getSelectionModel().getSelectedItem();
         Path filePath = baseDir.resolve(file);
-        os.writeObject(new FileMessage(filePath));
+        boolean isDir = Files.isDirectory(filePath);
+        if(isDir){
+            String newPach = String.valueOf(filePath);
+            os.writeObject(new CopyDirectory(newPach));
+        }else {
+            os.writeObject(new FileMessage(filePath));
+        }
     }
 
     public void downLoad(ActionEvent actionEvent) throws IOException {

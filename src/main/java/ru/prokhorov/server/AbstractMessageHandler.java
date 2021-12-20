@@ -1,8 +1,12 @@
 package ru.prokhorov.server;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 
 import io.netty.channel.ChannelHandlerContext;
@@ -38,6 +42,11 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 ctx.writeAndFlush(
                         new FileMessage(currentPath.resolve(req.getFileName()))
                 );
+                break;
+            case DELETE:
+                File getFilesDir = new File("serverFiles");
+                List<String> updateDir = Arrays.asList(Objects.requireNonNull(getFilesDir.list()));
+                ctx.writeAndFlush(new FilesList(updateDir));
                 break;
             case FILE:
                 FileMessage fileMessage = (FileMessage) message;

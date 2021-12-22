@@ -1,5 +1,6 @@
 package ru.prokhorov.client;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
@@ -19,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import ru.prokhorov.model.*;
+import ru.prokhorov.server.AbstractMessageHandler;
 
 public class Controller implements Initializable {
 
@@ -104,8 +106,15 @@ public class Controller implements Initializable {
         Path filePath = baseDir.resolve(file);
         boolean isDir = Files.isDirectory(filePath);
         if(isDir){
-            String newPach = String.valueOf(filePath);
-            os.writeObject(new CopyDirectory(newPach));
+            String newPath = String.valueOf(filePath);
+            os.writeObject(new CopyDirectory(newPath));
+            File dirExport = new File(newPath);
+            File[] arrDirExport = dirExport.listFiles();
+            assert arrDirExport != null;
+            for (File fileExport : arrDirExport){
+                Path exportPath = Paths.get(String.valueOf(fileExport));
+                os.writeObject(new FileMessage(exportPath));
+            }
         }else {
             os.writeObject(new FileMessage(filePath));
         }

@@ -12,10 +12,7 @@ import java.util.Objects;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
-import ru.prokhorov.model.AbstractMessage;
-import ru.prokhorov.model.FileMessage;
-import ru.prokhorov.model.FileRequest;
-import ru.prokhorov.model.FilesList;
+import ru.prokhorov.model.*;
 
 @Slf4j
 public class AbstractMessageHandler extends SimpleChannelInboundHandler<AbstractMessage> {
@@ -42,6 +39,13 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 ctx.writeAndFlush(
                         new FileMessage(currentPath.resolve(req.getFileName()))
                 );
+                break;
+            case CHANGE_DIR:
+                ChangeDir changeDir = (ChangeDir) message;
+                String nameDir = changeDir.getChangeDir();
+                File changeFilesDir = new File(currentPath + "\\" + nameDir);
+                List<String> changeListDir = Arrays.asList(Objects.requireNonNull(changeFilesDir.list()));
+                ctx.writeAndFlush(new FilesList(changeListDir));
                 break;
             case COPY_DIR:
             case DELETE:

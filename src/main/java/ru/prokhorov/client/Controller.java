@@ -90,6 +90,18 @@ public class Controller implements Initializable {
                     }
                 }
             });
+            serverFiles.setOnMouseClicked(e -> {
+               if(e.getClickCount() == 2){
+                   String dirName = serverFiles.getSelectionModel().getSelectedItem();
+                   try {
+                       ChangeDir changeDir = new ChangeDir();
+                       changeDir.setChangeDir(dirName);
+                       os.writeObject(changeDir);
+                   } catch (IOException ex) {
+                       ex.printStackTrace();
+                   }
+               }
+            });
             Socket socket = new Socket("localhost", 8189);
             os = new ObjectEncoderOutputStream(socket.getOutputStream());
             is = new ObjectDecoderInputStream(socket.getInputStream());

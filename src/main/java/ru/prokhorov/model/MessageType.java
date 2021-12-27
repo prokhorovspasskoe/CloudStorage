@@ -6,5 +6,6 @@ public enum MessageType {
     FILES_LIST,
     DELETE,
     COPY_DIR,
-    CHANGE_DIR
+    CHANGE_DIR,
+    COPY_FILES
 }

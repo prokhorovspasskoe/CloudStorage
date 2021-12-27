@@ -47,6 +47,15 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 List<String> changeListDir = Arrays.asList(Objects.requireNonNull(changeFilesDir.list()));
                 ctx.writeAndFlush(new FilesList(changeListDir));
                 break;
+            case COPY_FILES:
+                CopyFiles copyFiles = (CopyFiles) message;
+                String fileNameDir = copyFiles.getCopyFile();
+                Path path = Paths.get(fileNameDir);
+                int gnc = path.getNameCount();
+                String newDir = path.getName(gnc - 2).toString();
+                Path fileName = path.getFileName();
+                path = Paths.get(newDir);
+                Files.write(Paths.get(currentPath + "\\" + path + "\\" + fileName), copyFiles.getFile());
             case COPY_DIR:
             case DELETE:
                 File getFilesDir = new File(String.valueOf(currentPath));

@@ -124,8 +124,12 @@ public class Controller implements Initializable {
             File[] arrDirExport = dirExport.listFiles();
             assert arrDirExport != null;
             for (File fileExport : arrDirExport){
-                Path exportPath = Paths.get(String.valueOf(fileExport));
-                os.writeObject(new FileMessage(exportPath));
+                String exportFile = String.valueOf(fileExport);
+                CopyFiles copyFiles = new CopyFiles();
+                copyFiles.setCopyFile(exportFile);
+                os.writeObject(copyFiles);
+//                Path exportPath = Paths.get(String.valueOf(fileExport));
+//                os.writeObject(new FileMessage(exportPath));
             }
         }else {
             os.writeObject(new FileMessage(filePath));

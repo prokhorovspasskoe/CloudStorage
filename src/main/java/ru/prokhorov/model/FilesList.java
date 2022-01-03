@@ -12,6 +12,10 @@ import java.util.stream.Collectors;
 public class FilesList implements AbstractMessage{
     private final List<String> files;
 
+    public FilesList(List<String> files) {
+        this.files = files;
+    }
+
     public FilesList(Path path) throws IOException {
         files = Files.list(path)
                 .map(p -> p.getFileName().toString())

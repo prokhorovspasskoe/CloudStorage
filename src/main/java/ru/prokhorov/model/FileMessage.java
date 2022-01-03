@@ -8,8 +8,9 @@ import java.nio.file.Path;
 
 @Data
 public class FileMessage implements AbstractMessage{
-    private final String fileName;
-    private final byte[] bytes;
+    private String fileName;
+    private byte[] bytes;
+    private int gnc;
 
     public FileMessage(Path path) throws IOException {
         fileName = path.getFileName().toString();

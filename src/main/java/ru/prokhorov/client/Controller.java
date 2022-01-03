@@ -1,5 +1,6 @@
 package ru.prokhorov.client;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
@@ -18,10 +19,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import ru.prokhorov.model.AbstractMessage;
-import ru.prokhorov.model.FileMessage;
-import ru.prokhorov.model.FileRequest;
-import ru.prokhorov.model.FilesList;
+import ru.prokhorov.model.*;
+import ru.prokhorov.server.AbstractMessageHandler;
 
 public class Controller implements Initializable {
 
@@ -66,12 +65,6 @@ public class Controller implements Initializable {
         clientFiles.getItems().addAll(list);
     }
 
-    private List<FileInfo> getClientFiles() throws IOException {
-        return Files.list(baseDir)
-                .map(FileInfo::new)
-                .collect(Collectors.toList());
-    }
-
     private List<String> getFileNames() {
         try {
             return Files.list(baseDir)
@@ -87,7 +80,6 @@ public class Controller implements Initializable {
         try {
             baseDir = Paths.get(System.getProperty("user.home"));
             clientFiles.getItems().addAll(getFileNames());
-
             clientFiles.setOnMouseClicked(e -> {
                 if (e.getClickCount() == 2) {
                     String file = clientFiles.getSelectionModel().getSelectedItem();
@@ -97,6 +89,18 @@ public class Controller implements Initializable {
                         fillClientView(getFileNames());
                     }
                 }
+            });
+            serverFiles.setOnMouseClicked(e -> {
+               if(e.getClickCount() == 2){
+                   String dirName = serverFiles.getSelectionModel().getSelectedItem();
+                   try {
+                       ChangeDir changeDir = new ChangeDir();
+                       changeDir.setChangeDir(dirName);
+                       os.writeObject(changeDir);
+                   } catch (IOException ex) {
+                       ex.printStackTrace();
+                   }
+               }
             });
             Socket socket = new Socket("localhost", 8189);
             os = new ObjectEncoderOutputStream(socket.getOutputStream());
@@ -112,11 +116,33 @@ public class Controller implements Initializable {
     public void upload(ActionEvent actionEvent) throws IOException {
         String file = clientFiles.getSelectionModel().getSelectedItem();
         Path filePath = baseDir.resolve(file);
-        os.writeObject(new FileMessage(filePath));
+        boolean isDir = Files.isDirectory(filePath);
+        if(isDir){
+            String newPath = String.valueOf(filePath);
+            os.writeObject(new CopyDirectory(newPath));
+            File dirExport = new File(newPath);
+            File[] arrDirExport = dirExport.listFiles();
+            assert arrDirExport != null;
+            for (File fileExport : arrDirExport){
+                String exportFile = String.valueOf(fileExport);
+                CopyFiles copyFiles = new CopyFiles();
+                copyFiles.setCopyFile(exportFile);
+                os.writeObject(copyFiles);
+//                Path exportPath = Paths.get(String.valueOf(fileExport));
+//                os.writeObject(new FileMessage(exportPath));
+            }
+        }else {
+            os.writeObject(new FileMessage(filePath));
+        }
     }
 
     public void downLoad(ActionEvent actionEvent) throws IOException {
         String file = serverFiles.getSelectionModel().getSelectedItem();
         os.writeObject(new FileRequest(file));
+    }
+
+    public void delete(ActionEvent actionEvent) throws IOException {
+        String file = serverFiles.getSelectionModel().getSelectedItem();
+        os.writeObject(new FileDelete(file));
     }
 }

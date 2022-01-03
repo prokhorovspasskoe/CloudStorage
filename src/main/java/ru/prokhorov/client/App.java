@@ -14,7 +14,7 @@ public class App extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("ru.prokhorov.client/cloud_client.fxml")));
+        Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("ru.prokhorov.client/auth.fxml")));
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
     }

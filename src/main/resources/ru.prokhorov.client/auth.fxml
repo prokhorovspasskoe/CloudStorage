@@ -12,6 +12,9 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Button>
-      <Hyperlink layoutX="166.0" layoutY="177.0" prefHeight="23.0" prefWidth="103.0" text="REGISTRATION" />
+      <Hyperlink layoutX="166.0" layoutY="177.0" prefHeight="23.0" prefWidth="103.0" text="REGISTRATION" textFill="#b439bf">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Hyperlink>
    </children>
 </AnchorPane>

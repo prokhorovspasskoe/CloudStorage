@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="219.0" prefWidth="386.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.prokhorov.client.Auth">
+   <children>
+      <TextField layoutX="83.0" layoutY="28.0" prefHeight="25.0" prefWidth="236.0" fx:id="login"/>
+      <TextField layoutX="83.0" layoutY="76.0" prefHeight="25.0" prefWidth="236.0" fx:id="password"/>
+      <Button layoutX="175.0" layoutY="125.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Send" onAction="#send"/>
+      <Hyperlink layoutX="166.0" layoutY="177.0" prefHeight="23.0" prefWidth="103.0" text="REGISTRATION" />
+   </children>
+</AnchorPane>

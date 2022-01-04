@@ -16,6 +16,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("ru.prokhorov.client/auth.fxml")));
         primaryStage.setScene(new Scene(parent));
+        primaryStage.setTitle("Authorization");
         primaryStage.show();
     }
 }

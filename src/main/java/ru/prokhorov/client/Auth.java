@@ -10,7 +10,6 @@ import ru.prokhorov.model.DatabaseConnection;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class Auth {
     public TextField login;
@@ -34,5 +33,16 @@ public class Auth {
     private Scene loadMainWindow() throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource("cloud_client.fxml"));
         return new Scene(parent);
+    }
+
+    private Scene loadRegistrationWindow() throws IOException {
+        Parent parent = FXMLLoader.load(getClass().getResource("registration.fxml"));
+        return new Scene(parent);
+    }
+
+    public void registration(ActionEvent actionEvent) throws IOException {
+        Stage primary = (Stage) this.login.getScene().getWindow();
+        primary.setScene(loadRegistrationWindow());
+        primary.show();
     }
 }

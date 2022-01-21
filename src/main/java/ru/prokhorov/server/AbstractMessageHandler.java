@@ -56,6 +56,7 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 Path fileName = path.getFileName();
                 path = Paths.get(newDir);
                 Files.write(Paths.get(currentPath + "\\" + path + "\\" + fileName), copyFiles.getFile());
+            case FILE_RENAME:
             case COPY_DIR:
             case DELETE:
                 File getFilesDir = new File(String.valueOf(currentPath));

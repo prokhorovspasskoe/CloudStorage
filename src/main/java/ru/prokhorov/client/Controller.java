@@ -130,8 +130,6 @@ public class Controller implements Initializable {
                 CopyFiles copyFiles = new CopyFiles();
                 copyFiles.setCopyFile(exportFile);
                 os.writeObject(copyFiles);
-//                Path exportPath = Paths.get(String.valueOf(fileExport));
-//                os.writeObject(new FileMessage(exportPath));
             }
         }else {
             os.writeObject(new FileMessage(filePath));

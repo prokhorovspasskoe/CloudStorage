@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import ru.prokhorov.model.*;
 import ru.prokhorov.server.AbstractMessageHandler;
 
@@ -146,6 +148,14 @@ public class Controller implements Initializable {
         os.writeObject(new FileDelete(file));
     }
 
-    public void rename(ActionEvent actionEvent) {
+    public void rename(ActionEvent actionEvent) throws IOException {
+        String file = serverFiles.getSelectionModel().getSelectedItem();
+        TextInputDialog textInput = new TextInputDialog();
+        textInput.setTitle("Переименовать файл");
+        Optional<String> result = textInput.showAndWait();
+
+        if(result.isPresent()){
+            os.writeObject(new FileRename(file, result.get()));
+        }
     }
 }

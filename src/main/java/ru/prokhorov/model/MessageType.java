@@ -7,5 +7,6 @@ public enum MessageType {
     DELETE,
     COPY_DIR,
     CHANGE_DIR,
-    COPY_FILES
+    COPY_FILES,
+    FILE_RENAME
 }

@@ -145,4 +145,7 @@ public class Controller implements Initializable {
         String file = serverFiles.getSelectionModel().getSelectedItem();
         os.writeObject(new FileDelete(file));
     }
+
+    public void rename(ActionEvent actionEvent) {
+    }
 }

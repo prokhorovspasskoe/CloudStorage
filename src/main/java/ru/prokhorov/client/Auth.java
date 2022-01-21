@@ -10,6 +10,7 @@ import ru.prokhorov.model.DatabaseConnection;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class Auth {
     public TextField login;
@@ -36,7 +37,7 @@ public class Auth {
     }
 
     private Scene loadRegistrationWindow() throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("registration.fxml"));
+        Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ru.prokhorov.client/registration.fxml")));
         return new Scene(parent);
     }
 

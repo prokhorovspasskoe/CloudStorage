@@ -12,11 +12,11 @@ import java.nio.file.Paths;
 public class FileDelete implements  AbstractMessage {
 
 
-    private String deletePach;
+    private String deletePath;
 
     public FileDelete(String fileName) throws IOException {
-        deletePach = "serverFiles";
-        String deleteP = deletePach + "/" + fileName;
+        deletePath = "serverFiles";
+        String deleteP = deletePath + "/" + fileName;
         boolean existsFile = Files.exists(Paths.get(deleteP));
         if(existsFile) {
             Files.delete(Paths.get(deleteP));

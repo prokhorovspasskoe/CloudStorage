@@ -34,6 +34,7 @@ public class Controller implements Initializable {
     public ListView<String> serverFiles;
     public TextField clientFolder;
     private Path baseDir;
+    private Path serverDir;
     private ObjectDecoderInputStream is;
     private ObjectEncoderOutputStream os;
 
@@ -54,6 +55,8 @@ public class Controller implements Initializable {
                         FilesList files = (FilesList) msg;
                         Platform.runLater(() -> fillServerView(files.getFiles()));
                         break;
+                    case CHANGE_DIR:
+
                 }
             }
         } catch (Exception e) {
@@ -168,7 +171,9 @@ public class Controller implements Initializable {
         if(file != null){
             baseDir = Paths.get(file.getAbsolutePath());
             clientFolder.setText(file.toString());
+            clientFiles.getItems().clear();
             clientFiles.getItems().addAll(getFileNames());
+            clientFiles.refresh();
         }
     }
 }

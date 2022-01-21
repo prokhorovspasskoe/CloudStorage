@@ -17,7 +17,7 @@ import ru.prokhorov.model.*;
 @Slf4j
 public class AbstractMessageHandler extends SimpleChannelInboundHandler<AbstractMessage> {
 
-    private Path currentPath;
+    public Path currentPath;
 
     public AbstractMessageHandler() {
         currentPath = Paths.get("serverFiles");
@@ -43,7 +43,7 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
             case CHANGE_DIR:
                 ChangeDir changeDir = (ChangeDir) message;
                 String nameDir = changeDir.getChangeDir();
-                File changeFilesDir = new File(currentPath + "\\" + nameDir);
+                File changeFilesDir = new File(currentPath + "/" + nameDir);
                 List<String> changeListDir = Arrays.asList(Objects.requireNonNull(changeFilesDir.list()));
                 ctx.writeAndFlush(new FilesList(changeListDir));
                 break;
@@ -55,7 +55,7 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 String newDir = path.getName(gnc - 2).toString();
                 Path fileName = path.getFileName();
                 path = Paths.get(newDir);
-                Files.write(Paths.get(currentPath + "\\" + path + "\\" + fileName), copyFiles.getFile());
+                Files.write(Paths.get(currentPath + "/" + path + "/" + fileName), copyFiles.getFile());
             case FILE_RENAME:
             case COPY_DIR:
             case DELETE:

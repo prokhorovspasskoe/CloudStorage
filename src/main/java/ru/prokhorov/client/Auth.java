@@ -32,7 +32,7 @@ public class Auth {
     }
 
     private Scene loadMainWindow() throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("cloud_client.fxml"));
+        Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ru.prokhorov.client/cloud_client.fxml")));
         return new Scene(parent);
     }
 

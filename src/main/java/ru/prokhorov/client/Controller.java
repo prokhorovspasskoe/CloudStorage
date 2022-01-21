@@ -20,7 +20,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import ru.prokhorov.model.*;
 import ru.prokhorov.server.AbstractMessageHandler;
 
@@ -29,6 +32,7 @@ public class Controller implements Initializable {
 
     public ListView<String> clientFiles;
     public ListView<String> serverFiles;
+    public TextField clientFolder;
     private Path baseDir;
     private ObjectDecoderInputStream is;
     private ObjectEncoderOutputStream os;
@@ -149,11 +153,22 @@ public class Controller implements Initializable {
     public void rename(ActionEvent actionEvent) throws IOException {
         String file = serverFiles.getSelectionModel().getSelectedItem();
         TextInputDialog textInput = new TextInputDialog();
-        textInput.setTitle("Переименовать файл");
+        textInput.setTitle("Rename file");
         Optional<String> result = textInput.showAndWait();
 
         if(result.isPresent()){
             os.writeObject(new FileRename(file, result.get()));
+        }
+    }
+
+    public void openUserDir(ActionEvent actionEvent) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        Stage primary = (Stage) this.clientFolder.getScene().getWindow();
+        File file = directoryChooser.showDialog(primary);
+        if(file != null){
+            baseDir = Paths.get(file.getAbsolutePath());
+            clientFolder.setText(file.toString());
+            getFileNames();
         }
     }
 }

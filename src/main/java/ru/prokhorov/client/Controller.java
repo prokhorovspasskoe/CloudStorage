@@ -168,7 +168,7 @@ public class Controller implements Initializable {
         if(file != null){
             baseDir = Paths.get(file.getAbsolutePath());
             clientFolder.setText(file.toString());
-            getFileNames();
+            clientFiles.getItems().addAll(getFileNames());
         }
     }
 }

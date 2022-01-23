@@ -71,6 +71,16 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 );
                 ctx.writeAndFlush(new FilesList(currentPath));
                 break;
+            case AUTH:
+                DatabaseQueryAuth databaseQueryAuth = (DatabaseQueryAuth) message;
+                String login = databaseQueryAuth.getLogin();
+                String password  = databaseQueryAuth.getPassword();
+                if(!login.isEmpty() && !password.isEmpty()){
+                    DatabaseConnection databaseConnection = new DatabaseConnection();
+                    databaseConnection.sendingRequest(login, password);
+                    databaseQueryAuth.setAuth(databaseConnection.isEnter());
+                    ctx.writeAndFlush(databaseQueryAuth);
+                }
         }
     }
 }

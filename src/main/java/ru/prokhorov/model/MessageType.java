@@ -8,5 +8,7 @@ public enum MessageType {
     COPY_DIR,
     CHANGE_DIR,
     COPY_FILES,
-    FILE_RENAME
+    FILE_RENAME,
+    AUTH,
+    REGISTRATION
 }

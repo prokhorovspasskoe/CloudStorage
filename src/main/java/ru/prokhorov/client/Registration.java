@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ru.prokhorov.model.DatabaseConnection;
+import ru.prokhorov.server.DatabaseConnection;
 
 import java.io.IOException;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package ru.prokhorov.model;
+package ru.prokhorov.server;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;

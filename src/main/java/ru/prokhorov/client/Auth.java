@@ -38,9 +38,6 @@ public class Auth {
                 if (msg.getMessageType() == MessageType.AUTH) {
                     DatabaseQueryAuth databaseQueryAuth = (DatabaseQueryAuth) msg;
                     if (databaseQueryAuth.isAuth()) {
-                        socket.close();
-                        os.close();
-                        is.close();
                         isAuth = false;
                         databaseQueryAuth.setAuth(false);
                         Stage primary = (Stage) this.login.getScene().getWindow();

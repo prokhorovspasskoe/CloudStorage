@@ -18,6 +18,7 @@ import ru.prokhorov.model.*;
 public class AbstractMessageHandler extends SimpleChannelInboundHandler<AbstractMessage> {
 
     public Path currentPath;
+    private DatabaseConnection databaseConnection;
 
     public AbstractMessageHandler() {
         currentPath = Paths.get("serverFiles");
@@ -76,11 +77,24 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 String login = databaseQueryAuth.getLogin();
                 String password  = databaseQueryAuth.getPassword();
                 if(!login.isEmpty() && !password.isEmpty()){
-                    DatabaseConnection databaseConnection = new DatabaseConnection();
+                    databaseConnection = new DatabaseConnection();
                     databaseConnection.sendingRequest(login, password);
                     databaseQueryAuth.setAuth(databaseConnection.isEnter());
                     ctx.writeAndFlush(databaseQueryAuth);
                 }
+                break;
+            case REGISTRATION:
+                DatabaseQueryRegistration databaseQueryRegistration = (DatabaseQueryRegistration) message;
+                String loginReg = databaseQueryRegistration.getLogin();
+                String passReg = databaseQueryRegistration.getPassword();
+                String email = databaseQueryRegistration.getEmail();
+                if(!loginReg.isEmpty() && !passReg.isEmpty() && !email.isEmpty()){
+                    databaseConnection = new DatabaseConnection();
+                    databaseConnection.sendingRegistration(loginReg, passReg, email);
+                    databaseQueryRegistration.setRegistration(databaseConnection.isReg());
+                    ctx.writeAndFlush(databaseQueryRegistration);
+                }
+                break;
         }
     }
 }

@@ -2,6 +2,7 @@ package ru.prokhorov.client;
 
 import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
 import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -69,19 +70,18 @@ public class Auth {
 
     private Scene loadMainWindow() throws IOException {
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass()
-                .getResource("ru.prokhorov.client/cloud_client.fxml")));
-        return new Scene(parent);
-    }
-
-    private Scene loadRegistrationWindow() throws IOException {
-        Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass()
-                .getResource("ru.prokhorov.client/registration.fxml")));
+                .getResource("cloud_client.fxml")));
         return new Scene(parent);
     }
 
     public void registration(ActionEvent actionEvent) throws IOException {
-        Stage primary = (Stage) this.login.getScene().getWindow();
-        primary.setScene(loadRegistrationWindow());
-        primary.show();
+        Stage stage = (Stage) login.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/registration.fxml"));
+        Parent parent = loader.load();
+        Scene scene = new Scene(parent);
+        Platform.runLater(()-> stage.setScene(scene));
+        Platform.runLater(()-> stage.setTitle("Registration"));
+        Platform.runLater(stage::show);
     }
 }

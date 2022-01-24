@@ -64,13 +64,18 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 File newFile = new File(currentPath + "/" + fileRename.getNewFile());
                 boolean isRename = oldFile.renameTo(newFile);
                 if(isRename){
-                    System.out.println("Файл " + oldFile + " переименован в " + newFile);
+                    updateDir(ctx);
                 }
+                break;
             case COPY_DIR:
+                updateDir(ctx);
+                break;
             case DELETE:
-                File getFilesDir = new File(String.valueOf(currentPath));
-                List<String> updateDir = Arrays.asList(Objects.requireNonNull(getFilesDir.list()));
-                ctx.writeAndFlush(new FilesList(updateDir));
+                FileDelete fileDelete = (FileDelete) message;
+                File deleteFile = new File(currentPath + "/" + fileDelete.getDeleteFileName());
+                if(deleteFile.delete()) {
+                    updateDir(ctx);
+                }
                 break;
             case FILE:
                 FileMessage fileMessage = (FileMessage) message;
@@ -104,5 +109,10 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 }
                 break;
         }
+    }
+    public void updateDir(ChannelHandlerContext ctx){
+        File getFilesDir = new File(String.valueOf(currentPath));
+        List<String> updateDir = Arrays.asList(Objects.requireNonNull(getFilesDir.list()));
+        ctx.writeAndFlush(new FilesList(updateDir));
     }
 }

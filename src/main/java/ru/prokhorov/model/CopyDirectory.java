@@ -10,13 +10,16 @@ import java.nio.file.*;
 @Slf4j
 public class CopyDirectory implements AbstractMessage{
     private int gnc;
+    private String newDir;
 
     public CopyDirectory(String sourceDir) throws IOException {
         Path path = Paths.get(sourceDir);
         gnc = path.getNameCount();
-        String newDir = path.getName(gnc - 1).toString();
-        log.debug("New dir - " + newDir);
-        Files.createDirectory(Paths.get("serverFiles" + "\\" + newDir));
+        newDir = path.getName(gnc - 1).toString();
+    }
+
+    public String getNewDir() {
+        return newDir;
     }
 
     @Override

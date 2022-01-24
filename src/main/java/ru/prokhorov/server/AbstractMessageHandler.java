@@ -58,16 +58,23 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 Path fileName = path.getFileName();
                 path = Paths.get(newDir);
                 Files.write(Paths.get(currentPath + "/" + path + "/" + fileName), copyFiles.getFile());
+                updateDir(ctx);
+                break;
             case FILE_RENAME:
                 FileRename fileRename = (FileRename) message;
                 File oldFile = new File(currentPath + "/" + fileRename.getOldFile());
                 File newFile = new File(currentPath + "/" + fileRename.getNewFile());
                 boolean isRename = oldFile.renameTo(newFile);
                 if(isRename){
+                    log.debug("Rename file " + oldFile + " to " + newFile);
                     updateDir(ctx);
                 }
                 break;
             case COPY_DIR:
+                CopyDirectory copyDirectory = (CopyDirectory) message;
+                String createNewDir = copyDirectory.getNewDir();
+                Files.createDirectory(Paths.get(currentPath + "/" + createNewDir));
+                log.debug("New dir - " + createNewDir);
                 updateDir(ctx);
                 break;
             case DELETE:

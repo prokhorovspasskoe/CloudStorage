@@ -1,16 +1,10 @@
 package ru.prokhorov.server;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
-
+import java.util.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +14,11 @@ import ru.prokhorov.model.*;
 public class AbstractMessageHandler extends SimpleChannelInboundHandler<AbstractMessage> {
 
     public Path currentPath;
-    private DatabaseConnection databaseConnection;
+    private final Stack<String> stackDir;
 
     public AbstractMessageHandler() {
         currentPath = Paths.get("serverFiles");
+        stackDir = new Stack<String>();
     }
 
     @Override
@@ -36,6 +31,8 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                                 AbstractMessage message) throws Exception {
         log.debug("received: {}", message);
 
+        DatabaseConnection databaseConnection;
+
         switch (message.getMessageType()) {
             case FILE_REQUEST:
                 FileRequest req = (FileRequest) message;
@@ -46,10 +43,25 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
             case CHANGE_DIR:
                 ChangeDir changeDir = (ChangeDir) message;
                 String nameDir = changeDir.getChangeDir();
+                stackDir.push(currentPath + "/" + nameDir);
                 File changeFilesDir = new File(currentPath + "/" + nameDir);
                 currentPath = Paths.get(currentPath + "/" + nameDir);
                 List<String> changeListDir = Arrays.asList(Objects.requireNonNull(changeFilesDir.list()));
                 ctx.writeAndFlush(new FilesList(changeListDir));
+                break;
+            case DIR_UP:
+                int ss = stackDir.size();
+                if(ss == 1){
+                    currentPath = Paths.get("serverFiles");
+                    updateDir(ctx);
+                }else if(ss > 1){
+                    stackDir.pop();
+                    currentPath = Paths.get(stackDir.pop());
+                    updateDir(ctx);
+                }else{
+                    currentPath = Paths.get("serverFiles");
+                    updateDir(ctx);
+                }
                 break;
             case COPY_FILES:
                 CopyFiles copyFiles = (CopyFiles) message;

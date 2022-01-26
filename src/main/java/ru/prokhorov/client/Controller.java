@@ -176,4 +176,8 @@ public class Controller implements Initializable {
             clientFiles.refresh();
         }
     }
+
+    public void dirUp(ActionEvent actionEvent) throws IOException {
+        os.writeObject(new DirUp());
+    }
 }

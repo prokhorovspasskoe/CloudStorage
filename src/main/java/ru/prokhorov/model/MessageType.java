@@ -10,5 +10,6 @@ public enum MessageType {
     COPY_FILES,
     FILE_RENAME,
     AUTH,
-    REGISTRATION
+    REGISTRATION,
+    DIR_UP
 }

@@ -14,4 +14,6 @@
    <Button layoutX="377.0" layoutY="15.0" mnemonicParsing="false" onAction="#rename" prefHeight="25.0" prefWidth="111.0" text="Rename" />
    <TextField fx:id="clientFolder" layoutX="14.0" layoutY="54.0" prefHeight="25.0" prefWidth="260.0" />
    <Button layoutX="282.0" layoutY="54.0" mnemonicParsing="false" onAction="#openUserDir" text="..." />
+   <Button layoutX="341.0" layoutY="54.0" mnemonicParsing="false" onAction="#dirUp" prefHeight="25.0" prefWidth="31.0" text="UP" />
+   <Button layoutX="377.0" layoutY="54.0" mnemonicParsing="false" text="Home" />
 </AnchorPane>

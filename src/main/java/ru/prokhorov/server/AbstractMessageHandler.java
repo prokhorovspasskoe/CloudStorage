@@ -51,17 +51,13 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 break;
             case DIR_UP:
                 int ss = stackDir.size();
-                if(ss == 1){
+                if(ss <= 1){
                     currentPath = Paths.get("serverFiles");
-                    updateDir(ctx);
-                }else if(ss > 1){
+                }else {
                     stackDir.pop();
                     currentPath = Paths.get(stackDir.pop());
-                    updateDir(ctx);
-                }else{
-                    currentPath = Paths.get("serverFiles");
-                    updateDir(ctx);
                 }
+                updateDir(ctx);
                 break;
             case COPY_FILES:
                 CopyFiles copyFiles = (CopyFiles) message;

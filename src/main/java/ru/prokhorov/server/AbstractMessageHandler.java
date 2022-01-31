@@ -114,6 +114,7 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                     databaseConnection = new DatabaseConnection();
                     databaseConnection.sendingRequest(login, password);
                     databaseQueryAuth.setAuth(databaseConnection.isEnter());
+                    currentPath = Paths.get(currentPath + "/" + login);
                     ctx.writeAndFlush(databaseQueryAuth);
                 }
                 break;
@@ -127,7 +128,7 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                     databaseConnection.sendingRegistration(loginReg, passReg, email);
                     databaseQueryRegistration.setRegistration(databaseConnection.isReg());
                     Files.createDirectory(Paths.get(currentPath + "/" + loginReg));
-                            ctx.writeAndFlush(databaseQueryRegistration);
+                    ctx.writeAndFlush(databaseQueryRegistration);
                 }
                 break;
         }

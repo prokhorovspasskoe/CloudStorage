@@ -13,7 +13,7 @@ import ru.prokhorov.model.*;
 @Slf4j
 public class AbstractMessageHandler extends SimpleChannelInboundHandler<AbstractMessage> {
 
-    private Path currentPath;
+    private final Path currentPath;
     private Path userPath;
     private final Stack<String> stackDir;
 
@@ -45,7 +45,7 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 ChangeDir changeDir = (ChangeDir) message;
                 String nameDir = changeDir.getChangeDir();
                 stackDir.push(userPath + "/" + nameDir);
-                File changeFilesDir = new File(currentPath + "/" + nameDir);
+                File changeFilesDir = new File(userPath + "/" + nameDir);
                 userPath = Paths.get(userPath + "/" + nameDir);
                 List<String> changeListDir = Arrays.asList(Objects.requireNonNull(changeFilesDir.list()));
                 ctx.writeAndFlush(new FilesList(changeListDir));

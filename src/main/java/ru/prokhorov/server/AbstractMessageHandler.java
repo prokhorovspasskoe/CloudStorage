@@ -59,6 +59,10 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 }
                 updateDir(ctx);
                 break;
+            case HOME:
+                currentPath = Paths.get("serverFiles");
+                updateDir(ctx);
+                break;
             case COPY_FILES:
                 CopyFiles copyFiles = (CopyFiles) message;
                 String fileNameDir = copyFiles.getCopyFile();
@@ -122,7 +126,8 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                     databaseConnection = new DatabaseConnection();
                     databaseConnection.sendingRegistration(loginReg, passReg, email);
                     databaseQueryRegistration.setRegistration(databaseConnection.isReg());
-                    ctx.writeAndFlush(databaseQueryRegistration);
+                    Files.createDirectory(Paths.get(currentPath + "/" + loginReg));
+                            ctx.writeAndFlush(databaseQueryRegistration);
                 }
                 break;
         }

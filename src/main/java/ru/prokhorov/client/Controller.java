@@ -180,4 +180,8 @@ public class Controller implements Initializable {
     public void dirUp(ActionEvent actionEvent) throws IOException {
         os.writeObject(new DirUp());
     }
+
+    public void home(ActionEvent actionEvent) throws IOException {
+        os.writeObject(new Home());
+    }
 }

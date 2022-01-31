@@ -11,5 +11,6 @@ public enum MessageType {
     FILE_RENAME,
     AUTH,
     REGISTRATION,
-    DIR_UP
+    DIR_UP,
+    HOME
 }

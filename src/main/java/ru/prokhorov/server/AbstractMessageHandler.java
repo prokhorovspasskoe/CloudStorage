@@ -13,7 +13,8 @@ import ru.prokhorov.model.*;
 @Slf4j
 public class AbstractMessageHandler extends SimpleChannelInboundHandler<AbstractMessage> {
 
-    public Path currentPath;
+    private Path currentPath;
+    private Path userPath;
     private final Stack<String> stackDir;
 
     public AbstractMessageHandler() {
@@ -37,30 +38,30 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
             case FILE_REQUEST:
                 FileRequest req = (FileRequest) message;
                 ctx.writeAndFlush(
-                        new FileMessage(currentPath.resolve(req.getFileName()))
+                        new FileMessage(userPath.resolve(req.getFileName()))
                 );
                 break;
             case CHANGE_DIR:
                 ChangeDir changeDir = (ChangeDir) message;
                 String nameDir = changeDir.getChangeDir();
-                stackDir.push(currentPath + "/" + nameDir);
+                stackDir.push(userPath + "/" + nameDir);
                 File changeFilesDir = new File(currentPath + "/" + nameDir);
-                currentPath = Paths.get(currentPath + "/" + nameDir);
+                userPath = Paths.get(userPath + "/" + nameDir);
                 List<String> changeListDir = Arrays.asList(Objects.requireNonNull(changeFilesDir.list()));
                 ctx.writeAndFlush(new FilesList(changeListDir));
                 break;
             case DIR_UP:
                 int ss = stackDir.size();
                 if(ss <= 1){
-                    currentPath = Paths.get("serverFiles");
+                    updateDir(ctx);
                 }else {
                     stackDir.pop();
-                    currentPath = Paths.get(stackDir.pop());
+                    userPath = Paths.get(stackDir.pop());
                 }
                 updateDir(ctx);
                 break;
             case HOME:
-                currentPath = Paths.get("serverFiles");
+
                 updateDir(ctx);
                 break;
             case COPY_FILES:
@@ -71,13 +72,13 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                 String newDir = path.getName(gnc - 2).toString();
                 Path fileName = path.getFileName();
                 path = Paths.get(newDir);
-                Files.write(Paths.get(currentPath + "/" + path + "/" + fileName), copyFiles.getFile());
+                Files.write(Paths.get(userPath + "/" + path + "/" + fileName), copyFiles.getFile());
                 updateDir(ctx);
                 break;
             case FILE_RENAME:
                 FileRename fileRename = (FileRename) message;
-                File oldFile = new File(currentPath + "/" + fileRename.getOldFile());
-                File newFile = new File(currentPath + "/" + fileRename.getNewFile());
+                File oldFile = new File(userPath + "/" + fileRename.getOldFile());
+                File newFile = new File(userPath + "/" + fileRename.getNewFile());
                 boolean isRename = oldFile.renameTo(newFile);
                 if(isRename){
                     log.debug("Rename file " + oldFile + " to " + newFile);
@@ -87,13 +88,13 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
             case COPY_DIR:
                 CopyDirectory copyDirectory = (CopyDirectory) message;
                 String createNewDir = copyDirectory.getNewDir();
-                Files.createDirectory(Paths.get(currentPath + "/" + createNewDir));
+                Files.createDirectory(Paths.get(userPath + "/" + createNewDir));
                 log.debug("New dir - " + createNewDir);
                 updateDir(ctx);
                 break;
             case DELETE:
                 FileDelete fileDelete = (FileDelete) message;
-                File deleteFile = new File(currentPath + "/" + fileDelete.getDeleteFileName());
+                File deleteFile = new File(userPath + "/" + fileDelete.getDeleteFileName());
                 if(deleteFile.delete()) {
                     updateDir(ctx);
                 }
@@ -101,10 +102,10 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
             case FILE:
                 FileMessage fileMessage = (FileMessage) message;
                 Files.write(
-                        currentPath.resolve(fileMessage.getFileName()),
+                        userPath.resolve(fileMessage.getFileName()),
                         fileMessage.getBytes()
                 );
-                ctx.writeAndFlush(new FilesList(currentPath));
+                ctx.writeAndFlush(new FilesList(userPath));
                 break;
             case AUTH:
                 DatabaseQueryAuth databaseQueryAuth = (DatabaseQueryAuth) message;
@@ -114,7 +115,7 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                     databaseConnection = new DatabaseConnection();
                     databaseConnection.sendingRequest(login, password);
                     databaseQueryAuth.setAuth(databaseConnection.isEnter());
-                    currentPath = Paths.get(currentPath + "/" + login);
+                    userPath = Paths.get(currentPath + "/" + login);
                     ctx.writeAndFlush(databaseQueryAuth);
                 }
                 break;
@@ -128,14 +129,14 @@ public class AbstractMessageHandler extends SimpleChannelInboundHandler<Abstract
                     databaseConnection.sendingRegistration(loginReg, passReg, email);
                     databaseQueryRegistration.setRegistration(databaseConnection.isReg());
                     Files.createDirectory(Paths.get(currentPath + "/" + loginReg));
-                    currentPath = Paths.get(currentPath + "/" + loginReg);
+                    userPath = Paths.get(currentPath + "/" + loginReg);
                     ctx.writeAndFlush(databaseQueryRegistration);
                 }
                 break;
         }
     }
     public void updateDir(ChannelHandlerContext ctx){
-        File getFilesDir = new File(String.valueOf(currentPath));
+        File getFilesDir = new File(String.valueOf(userPath));
         List<String> updateDir = Arrays.asList(Objects.requireNonNull(getFilesDir.list()));
         ctx.writeAndFlush(new FilesList(updateDir));
     }

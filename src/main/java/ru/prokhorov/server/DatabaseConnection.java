@@ -53,10 +53,10 @@ public class DatabaseConnection {
             PreparedStatement ps = connection.prepareStatement("SELECT id FROM users WHERE login = "
                     + login + " AND " + "email = " + email + ";");
             ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 id = resultSet.getInt("id");
             }
-            if(id == 0){
+            if (id == 0) {
                 isReg = true;
                 PreparedStatement rps = connection.prepareStatement("INSERT INTO users (login, email, password) " +
                         "VALUES (" + login + ", " + email + ", " + password + ");");
@@ -64,7 +64,7 @@ public class DatabaseConnection {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             connection.close();
         }
     }

@@ -11,18 +11,14 @@ import java.nio.file.Paths;
 @Slf4j
 public class FileDelete implements  AbstractMessage {
 
+    private String deleteFileName;
 
-    private String deletePach;
+    public FileDelete(String deleteFileName) {
+        this.deleteFileName = deleteFileName;
+    }
 
-    public FileDelete(String fileName) throws IOException {
-        deletePach = "serverFiles";
-        String deleteP = deletePach + "/" + fileName;
-        boolean existsFile = Files.exists(Paths.get(deleteP));
-        if(existsFile) {
-            Files.delete(Paths.get(deleteP));
-        }else{
-            log.debug("File exists!");
-        }
+    public String getDeleteFileName() {
+        return deleteFileName;
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import ru.prokhorov.model.*;
 import ru.prokhorov.server.AbstractMessageHandler;
 
@@ -27,7 +32,9 @@ public class Controller implements Initializable {
 
     public ListView<String> clientFiles;
     public ListView<String> serverFiles;
+    public TextField clientFolder;
     private Path baseDir;
+    private Path serverDir;
     private ObjectDecoderInputStream is;
     private ObjectEncoderOutputStream os;
 
@@ -48,6 +55,8 @@ public class Controller implements Initializable {
                         FilesList files = (FilesList) msg;
                         Platform.runLater(() -> fillServerView(files.getFiles()));
                         break;
+                    case CHANGE_DIR:
+
                 }
             }
         } catch (Exception e) {
@@ -128,8 +137,6 @@ public class Controller implements Initializable {
                 CopyFiles copyFiles = new CopyFiles();
                 copyFiles.setCopyFile(exportFile);
                 os.writeObject(copyFiles);
-//                Path exportPath = Paths.get(String.valueOf(fileExport));
-//                os.writeObject(new FileMessage(exportPath));
             }
         }else {
             os.writeObject(new FileMessage(filePath));
@@ -144,5 +151,37 @@ public class Controller implements Initializable {
     public void delete(ActionEvent actionEvent) throws IOException {
         String file = serverFiles.getSelectionModel().getSelectedItem();
         os.writeObject(new FileDelete(file));
+    }
+
+    public void rename(ActionEvent actionEvent) throws IOException {
+        String file = serverFiles.getSelectionModel().getSelectedItem();
+        TextInputDialog textInput = new TextInputDialog();
+        textInput.setTitle("Rename file");
+        Optional<String> result = textInput.showAndWait();
+
+        if(result.isPresent()){
+            os.writeObject(new FileRename(file, result.get()));
+        }
+    }
+
+    public void openUserDir(ActionEvent actionEvent) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        Stage primary = (Stage) this.clientFolder.getScene().getWindow();
+        File file = directoryChooser.showDialog(primary);
+        if(file != null){
+            baseDir = Paths.get(file.getAbsolutePath());
+            clientFolder.setText(file.toString());
+            clientFiles.getItems().clear();
+            clientFiles.getItems().addAll(getFileNames());
+            clientFiles.refresh();
+        }
+    }
+
+    public void dirUp(ActionEvent actionEvent) throws IOException {
+        os.writeObject(new DirUp());
+    }
+
+    public void home(ActionEvent actionEvent) throws IOException {
+        os.writeObject(new Home());
     }
 }

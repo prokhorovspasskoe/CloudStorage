@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import ru.prokhorov.model.AbstractMessage;
 import ru.prokhorov.model.DatabaseQueryAuth;
 import ru.prokhorov.model.MessageType;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;

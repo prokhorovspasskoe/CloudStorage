@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="330.0" prefWidth="373.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.prokhorov.client.Registration">
+   <children>
+      <TextField fx:id="login" layoutX="77.0" layoutY="78.0" prefHeight="25.0" prefWidth="219.0" promptText="login" />
+      <TextField fx:id="email" layoutX="77.0" layoutY="125.0" prefHeight="25.0" prefWidth="219.0" promptText="e-mail" />
+      <TextField fx:id="password" layoutX="77.0" layoutY="175.0" prefHeight="25.0" prefWidth="219.0" promptText="password" />
+      <TextField fx:id="pass_conf" layoutX="77.0" layoutY="221.0" prefHeight="25.0" prefWidth="219.0" promptText="password confirmation" />
+      <Label layoutX="77.0" layoutY="35.0" text="REGISTRATION">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Button layoutX="161.0" layoutY="262.0" mnemonicParsing="false" onAction="#send" text="Send">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Button>
+   </children>
+</AnchorPane>

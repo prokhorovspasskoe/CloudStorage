@@ -6,7 +6,12 @@
 
     <groupId>com.cloud2021</groupId>
     <artifactId>CloudStorage</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
+    <modules>
+        <module>Server</module>
+        <module>Client</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

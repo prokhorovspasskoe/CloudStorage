@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.layout.AnchorPane?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="323.0" prefWidth="649.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.prokhorov.client.Controller">
     <ListView fx:id="clientFiles" layoutX="14.0" layoutY="89.0" prefHeight="171.0" prefWidth="292.0" />
     <ListView fx:id="serverFiles" layoutX="343.0" layoutY="89.0" prefHeight="171.0" prefWidth="292.0" />
